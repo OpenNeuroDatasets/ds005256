@@ -3,6 +3,19 @@
 set -eu
 
 heudiconv -f code/heuristic.py --command populate-intended-for   -o . --files doesnotmatter
-# for one subj session -- relaxed
-heudiconv -f code/heuristic-intendedfor-imagingvolume.py --command populate-intended-for -o . -s 0070 -ss 04 --files doesnotmatter
-#
+
+# for multi subjs sessions -- relaxed
+
+## dwi only
+for sub in 001 002 003 004 005 006 007 008 009 010; do
+  heudiconv -f code/heuristic-intendedfor-imagingvolume.py --command populate-intended-for -o . -s 0${sub} -ss 01 --files doesnotmatter
+done	
+
+## and a few cases of weird funcs
+subs=( 025 069 070 102 )
+sess=( 4   1   4   2   )
+
+for i in "${!subs[@]}"; do
+  heudiconv -f code/heuristic-intendedfor-imagingvolume.py --command populate-intended-for -o . -s "0${subs[i]}" -ss "0${sess[i]}" --files doesnotmatter
+done
+
